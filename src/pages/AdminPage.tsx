@@ -79,82 +79,52 @@ export const AdminPage: React.FC = () => {
     return arcadeGames + skillBadges + triviaGames;
   };
 
-  const handleFileUpload = (file: File) => {
-    console.log('Starting file upload process...');
+  const handleFileUpload = async (file: File) => {
     Papa.parse(file, {
-      header: true,
-      complete: (results) => {
+      complete: async (results) => {
+        const headers = results.data[0] as string[];
+        const data = results.data.slice(1).map((row: any) => {
+          const user: any = {};
+          headers.forEach((header, index) => {
+            // Convert header to lowercase and replace spaces with underscores
+            const key = header.toLowerCase().replace(/\s+/g, '_');
+            // Convert numeric values to numbers
+            const value = ['skill_badges', 'arcade_games', 'trivia_games', 'lab_free_courses', 'total_progress'].includes(key)
+              ? parseInt(row[index]) || 0
+              : row[index];
+            user[key] = value;
+          });
+          return user;
+        });
+
         try {
-          console.log('CSV parsing completed. Number of rows:', results.data.length);
-          
-          const users: User[] = results.data
-            .filter((row: any) => {
-              const isValid = row['User Name'] && row['Google Cloud Skills Boost Profile URL'];
-              if (!isValid) {
-                console.log('Filtered out invalid row:', row);
-              }
-              return isValid;
-            })
-            .map((row: any, index: number) => {
-              const skillBadges = parseInt(row['# of Skill Badges Completed']) || 0;
-              const arcadeGames = parseInt(row['# of Arcade Games Completed']) || 0;
-              const triviaGames = parseInt(row['# of Trivia Games Completed']) || 0;
-              const labFreeCourses = parseInt(row['# of Lab-free Courses Completed']) || 0;
+          const response = await fetch('/api/store-data', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ data }),
+          });
 
-              const totalProgress = calculateProgress(arcadeGames, skillBadges, triviaGames);
-
-              return {
-                id: index + 1,
-                name: row['User Name'].trim(),
-                profileUrl: row['Google Cloud Skills Boost Profile URL'].trim(),
-                profileStatus: row['Profile URL Status'] || 'All Good',
-                milestoneEarned: row['Milestone Earned'] || 'Not Started',
-                skillBadges,
-                arcadeGames,
-                triviaGames,
-                labFreeCourses,
-                totalProgress
-              };
-            });
-
-          console.log('Processed users:', users.length);
-          
-          // Sort users by total progress in descending order
-          users.sort((a, b) => b.totalProgress - a.totalProgress);
-
-          // Store in localStorage with timestamp
-          const dataToStore = {
-            users,
-            lastUpdated: new Date().toISOString()
-          };
-          localStorage.setItem('leaderboardData', JSON.stringify(dataToStore));
-          console.log('Data stored in localStorage with timestamp:', dataToStore.lastUpdated);
-          
-          // Verify the data was stored correctly
-          const storedData = localStorage.getItem('leaderboardData');
-          if (storedData) {
-            const parsedData = JSON.parse(storedData);
-            console.log('Verified stored data:', parsedData.users.length, 'users');
+          if (!response.ok) {
+            throw new Error('Failed to store data');
           }
+
+          setFile(file);
+          setError(false);
           
-          // Dispatch custom event to update the leaderboard
-          window.dispatchEvent(new CustomEvent('leaderboardUpdate'));
-          console.log('Leaderboard update event dispatched');
-          
-          // Show success message with more details
-          alert(`Leaderboard updated successfully!\nUsers: ${users.length}\nLast Updated: ${new Date().toLocaleString()}`);
+          // Show success message
+          alert('Data uploaded successfully!');
           
           // Navigate to home page
           navigate('/');
         } catch (error) {
-          console.error('Error processing CSV data:', error);
-          alert('Error processing CSV file. Please check the file format and try again.');
+          console.error('Error storing data:', error);
+          setError(true);
+          alert('Error uploading data. Please try again.');
         }
       },
-      error: (error) => {
-        console.error('Error parsing CSV:', error);
-        alert('Error parsing CSV file. Please check the file format and try again.');
-      },
+      header: true,
     });
   };
 

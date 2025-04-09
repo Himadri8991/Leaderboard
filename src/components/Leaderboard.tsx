@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { User } from '../types';
 import { TrophyIcon, LinkIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
@@ -7,7 +7,29 @@ interface LeaderboardProps {
   users: User[];
 }
 
-export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
+const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
+  const [leaderboardData, setLeaderboardData] = useState<User[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/get-data');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setLeaderboardData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Use the fetched data if available, otherwise use the prop data
+  const displayUsers = leaderboardData.length > 0 ? leaderboardData : users;
+
   return (
     <div className="w-full overflow-x-auto">
       <table className="w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -43,7 +65,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
           </tr>
         </thead>
         <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
-          {users.map((user, index) => (
+          {displayUsers.map((user, index) => (
             <tr
               key={user.id}
               className="group hover:bg-gray-50/30 dark:hover:bg-gray-800/30 transition-colors duration-200"
@@ -116,4 +138,6 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
       </table>
     </div>
   );
-}; 
+};
+
+export default Leaderboard; 

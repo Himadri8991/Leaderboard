@@ -1,57 +1,57 @@
 const express = require('express');
 const cors = require('cors');
+const { MongoClient } = require('mongodb');
+require('dotenv').config();
+
 const app = express();
-const port = 3001;
+const PORT = process.env.PORT || 5000;
 
-// Enable CORS for all routes
+// MongoDB connection string from environment variable
+const MONGODB_URI = process.env.MONGODB_URI;
+
+// Middleware
 app.use(cors());
+app.use(express.json());
 
-// Sample user data
-const users = [
-  {
-    id: 1,
-    name: 'John Doe',
-    profileUrl: 'https://example.com/johndoe',
-    profileStatus: 'Active',
-    milestoneEarned: 'Level 5',
-    skillBadges: 12,
-    arcadeGames: 8,
-    triviaGames: 15,
-    labFreeCourses: 5,
-    totalProgress: 75
-  },
-  {
-    id: 2,
-    name: 'Jane Smith',
-    profileUrl: 'https://example.com/janesmith',
-    profileStatus: 'Active',
-    milestoneEarned: 'Level 3',
-    skillBadges: 8,
-    arcadeGames: 5,
-    triviaGames: 10,
-    labFreeCourses: 3,
-    totalProgress: 60
-  },
-  {
-    id: 3,
-    name: 'Bob Johnson',
-    profileUrl: 'https://example.com/bobjohnson',
-    profileStatus: 'Inactive',
-    milestoneEarned: 'Level 2',
-    skillBadges: 5,
-    arcadeGames: 3,
-    triviaGames: 7,
-    labFreeCourses: 2,
-    totalProgress: 45
+// MongoDB connection
+let db;
+
+async function connectToMongoDB() {
+  try {
+    const client = await MongoClient.connect(MONGODB_URI);
+    db = client.db('leaderboard'); // Using the database name from your connection string
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
   }
-];
+}
 
-// API endpoint to get all users
-app.get('/api/users', (req, res) => {
-  res.json(users);
+connectToMongoDB();
+
+// Store CSV data
+app.post('/api/store-data', async (req, res) => {
+  try {
+    const { data } = req.body;
+    await db.collection('users').deleteMany({}); // Clear existing data
+    await db.collection('users').insertMany(data);
+    res.json({ message: 'Data stored successfully' });
+  } catch (error) {
+    console.error('Error storing data:', error);
+    res.status(500).json({ error: 'Failed to store data' });
+  }
 });
 
-// Start the server
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+// Get stored data
+app.get('/api/get-data', async (req, res) => {
+  try {
+    const data = await db.collection('users').find({}).toArray();
+    res.json(data);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Failed to fetch data' });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 }); 
