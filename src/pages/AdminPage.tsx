@@ -103,25 +103,18 @@ export const AdminPage: React.FC = () => {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ data }),
+            body: JSON.stringify(data),
           });
 
           if (!response.ok) {
             throw new Error('Failed to store data');
           }
 
-          setFile(file);
-          setError(false);
-          
-          // Show success message
           alert('Data uploaded successfully!');
-          
-          // Navigate to home page
           navigate('/');
         } catch (error) {
           console.error('Error storing data:', error);
-          setError(true);
-          alert('Error uploading data. Please try again.');
+          alert('Failed to upload data. Please try again.');
         }
       },
       header: true,
