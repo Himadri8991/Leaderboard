@@ -7,7 +7,7 @@ interface LeaderboardProps {
   users: User[];
 }
 
-const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
+export const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
   const [leaderboardData, setLeaderboardData] = useState<User[]>([]);
 
   useEffect(() => {
@@ -138,6 +138,4 @@ const Leaderboard: React.FC<LeaderboardProps> = ({ users }) => {
       </table>
     </div>
   );
-};
-
-export default Leaderboard; 
+}; 
