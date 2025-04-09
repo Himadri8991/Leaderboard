@@ -32,4 +32,7 @@ yarn-error.log*
 !.env.example
 
 # TypeScript
-*.tsbuildinfo 
+*.tsbuildinfo
+
+# Duplicate directory
+/arcade-facilitator 
