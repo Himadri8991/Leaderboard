@@ -9,6 +9,7 @@ export const SearchBar: React.FC<{ onSearch: (query: string) => void }> = ({ onS
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    console.log('Search query:', value); // Debugging line
     setQuery(value);
     onSearch(value);
   };

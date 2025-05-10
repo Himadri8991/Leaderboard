@@ -11,12 +11,19 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
 
 // MongoDB connection
 let db;
 
 async function connectToMongoDB() {
+  if (!MONGODB_URI) {
+    console.error('MongoDB connection string is not defined');
+    return;
+  }
+
+  console.log('Connecting to MongoDB...');
+
   try {
     const client = await MongoClient.connect(MONGODB_URI);
     db = client.db('leaderboard'); // Using the database name from your connection string
@@ -31,7 +38,8 @@ connectToMongoDB();
 // Store CSV data
 app.post('/api/store-data', async (req, res) => {
   try {
-    const { data } = req.body;
+    const data = req.body;
+    console.log(req.body)
     await db.collection('users').deleteMany({}); // Clear existing data
     await db.collection('users').insertMany(data);
     res.json({ message: 'Data stored successfully' });
@@ -52,6 +60,10 @@ app.get('/api/get-data', async (req, res) => {
   }
 });
 
+
+
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+
 }); 
