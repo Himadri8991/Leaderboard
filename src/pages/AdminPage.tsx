@@ -23,15 +23,15 @@ export const AdminPage: React.FC = () => {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
-      
+
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
-      
+
       // Create a siren effect by modulating the frequency
       oscillator.type = 'sine';
       let frequency = 800;
       let increasing = true;
-      
+
       const interval = setInterval(() => {
         if (increasing) {
           frequency += 50;
@@ -42,10 +42,10 @@ export const AdminPage: React.FC = () => {
         }
         oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
       }, 50);
-      
+
       gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
       oscillator.start();
-      
+
       const timer = setTimeout(() => {
         oscillator.stop();
         clearInterval(interval);
@@ -98,7 +98,7 @@ export const AdminPage: React.FC = () => {
         });
 
         try {
-          const response = await fetch('http://localhost:5000/api/store-data', {
+          const response = await fetch('https://leaderboard-pd6g.onrender.com/api/store-data', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -128,22 +128,19 @@ export const AdminPage: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className={`card p-8 max-w-md w-full bg-white dark:bg-gray-800 shadow-xl rounded-xl border-2 ${
-            error ? 'border-red-500 animate-pulse' : 'border-primary-light dark:border-primary-dark'
-          }`}
+          className={`card p-8 max-w-md w-full bg-white dark:bg-gray-800 shadow-xl rounded-xl border-2 ${error ? 'border-red-500 animate-pulse' : 'border-primary-light dark:border-primary-dark'
+            }`}
         >
           <div className="text-center mb-6">
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <LockClosedIcon className={`h-16 w-16 mx-auto mb-4 ${
-                error ? 'text-red-500' : 'text-primary-light dark:text-primary-dark'
-              }`} />
+              <LockClosedIcon className={`h-16 w-16 mx-auto mb-4 ${error ? 'text-red-500' : 'text-primary-light dark:text-primary-dark'
+                }`} />
             </motion.div>
-            <h2 className={`text-3xl font-bold ${
-              error ? 'text-red-500' : 'text-primary-light dark:text-primary-dark'
-            }`}>
+            <h2 className={`text-3xl font-bold ${error ? 'text-red-500' : 'text-primary-light dark:text-primary-dark'
+              }`}>
               Admin Portal Access
             </h2>
             <p className="text-gray-600 dark:text-gray-300 mt-2">
@@ -173,11 +170,10 @@ export const AdminPage: React.FC = () => {
               type="submit"
               whileHover={{ scale: 1.02, boxShadow: "0 10px 20px rgba(0,0,0,0.1)" }}
               whileTap={{ scale: 0.98 }}
-              className={`w-full py-3 px-6 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-300 hover:shadow-lg border-2 ${
-                error 
-                  ? 'bg-red-500 text-white border-red-600 hover:bg-red-600' 
+              className={`w-full py-3 px-6 rounded-lg font-semibold flex items-center justify-center space-x-2 transition-all duration-300 hover:shadow-lg border-2 ${error
+                  ? 'bg-red-500 text-white border-red-600 hover:bg-red-600'
                   : 'bg-gradient-to-r from-primary-light to-primary-dark text-white border-transparent hover:border-white'
-              }`}
+                }`}
             >
               <span>Submit</span>
               <ArrowRightIcon className="h-5 w-5" />

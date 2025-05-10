@@ -97,7 +97,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/get-data');
+        const response = await fetch('https://leaderboard-pd6g.onrender.com/api/get-data');
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
