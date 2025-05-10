@@ -93,41 +93,63 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [lastUpdated, setLastUpdated] = useState<string>('');
 
-  // Load initial data
+  //getting data from backend
   useEffect(() => {
-    const loadData = () => {
-      const storedData = localStorage.getItem('leaderboardData');
-      if (storedData) {
-        try {
-          const parsedData = JSON.parse(storedData);
-          setUsers(parsedData.users || []);
-          setLastUpdated(parsedData.lastUpdated || '');
-          console.log('Loaded data from localStorage:', parsedData.users.length, 'users');
-        } catch (error) {
-          console.error('Error parsing leaderboard data:', error);
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:5000/api/get-data');
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
         }
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
     };
 
-    // Load data on mount
-    loadData();
-
-    // Create a custom event listener for data updates
-    const handleDataUpdate = () => {
-      loadData();
-    };
-
-    window.addEventListener('leaderboardUpdate', handleDataUpdate);
-    return () => window.removeEventListener('leaderboardUpdate', handleDataUpdate);
+    fetchData();
   }, []);
+  // Load initial data
+  // useEffect(() => {
+  //   const loadData = () => {
+  //     const storedData = localStorage.getItem('leaderboardData');
+  //     if (storedData) {
+  //       try {
+  //         const parsedData = JSON.parse(storedData);
+  //         setUsers(parsedData?.users || []);
+  //         setLastUpdated(parsedData.lastUpdated || '');
+  //         console.log('Loaded data from localStorage:', parsedData.users.length, 'users');
+  //       } catch (error) {
+  //         console.error('Error parsing leaderboard data:', error);
+  //       }
+  //     }
+  //   };
+
+  //   // Load data on mount
+  //   loadData();
+
+  //   // Create a custom event listener for data updates
+  //   const handleDataUpdate = () => {
+  //     loadData();
+  //   };
+
+  //   window.addEventListener('leaderboardUpdate', handleDataUpdate);
+  //   return () => window.removeEventListener('leaderboardUpdate', handleDataUpdate);
+  // }, []);
 
   const handleSearch = (query: string) => {
+    console.log("this is  function checking==>", query)
     setSearchQuery(query);
   };
 
-  const filteredUsers = users.filter(user =>
-    user.name.toLowerCase().includes(searchQuery.toLowerCase())
+  let filteredUsers = users?.filter(user =>
+    user.user_name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+
+
+
 
   return (
     <ThemeProvider>
@@ -140,7 +162,7 @@ function App() {
                 <div className="flex items-center justify-between h-16">
                   <div className="flex items-center">
                     <motion.div
-                      whileHover={{ scale: 1.1}}
+                      whileHover={{ scale: 1.1 }}
                       transition={{ type: "spring", stiffness: 300 }}
                     >
                       <Link to="/" className="text-2xl font-bold text-primary-light dark:text-primary-dark">
@@ -197,7 +219,7 @@ function App() {
                         </div>
 
                         <div className="card bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-xl rounded-xl overflow-hidden border-2 border-primary-light/20 dark:border-primary-dark/20">
-                          <Leaderboard users={filteredUsers} />
+                          <Leaderboard users={filteredUsers} searchQuery={searchQuery} />
                         </div>
                       </div>
                     </main>

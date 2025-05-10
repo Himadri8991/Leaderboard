@@ -98,7 +98,7 @@ export const AdminPage: React.FC = () => {
         });
 
         try {
-          const response = await fetch('/api/store-data', {
+          const response = await fetch('http://localhost:5000/api/store-data', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -117,7 +117,7 @@ export const AdminPage: React.FC = () => {
           alert('Failed to upload data. Please try again.');
         }
       },
-      header: true,
+      header: false,
     });
   };
 
