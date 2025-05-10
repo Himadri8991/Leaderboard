@@ -22,19 +22,19 @@ const UploadPage: React.FC = () => {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
-      
+
       oscillator.connect(gainNode);
       gainNode.connect(audioContext.destination);
-      
+
       oscillator.type = 'sine';
       oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
       oscillator.frequency.linearRampToValueAtTime(400, audioContext.currentTime + 0.5);
       oscillator.frequency.linearRampToValueAtTime(1200, audioContext.currentTime + 1);
-      
+
       gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
-      
+
       oscillator.start();
-      
+
       // Redirect after 5 seconds
       setTimeout(() => {
         oscillator.stop();
@@ -57,16 +57,16 @@ const UploadPage: React.FC = () => {
     try {
       const text = await file.text();
       const results = Papa.parse(text, { header: true });
-      
+
       // Process the data
       const processedData = results.data.map((row: any) => {
         const arcadePoints = parseInt(row['Arcade Games Completed']) || 0;
         const skillPoints = parseInt(row['Skill Badges Completed']) || 0;
         const triviaPoints = parseInt(row['Trivia Games Completed']) || 0;
-        
+
         // Calculate total progress with weights
         const totalProgress = (arcadePoints * 1.5) + (skillPoints * 2) + (triviaPoints * 1);
-        
+
         return {
           ...row,
           totalProgress,
@@ -81,7 +81,7 @@ const UploadPage: React.FC = () => {
       });
 
       // Send to backend
-      const response = await fetch('http://localhost:3001/api/users', {
+      const response = await fetch('https://leaderboard-pd6g.onrender.com/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -109,9 +109,8 @@ const UploadPage: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-md mx-auto mt-20"
         >
-          <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 transition-all duration-300 ${
-            error ? 'border-2 border-red-500 animate-pulse bg-red-50 dark:bg-red-900/20' : ''
-          }`}>
+          <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 transition-all duration-300 ${error ? 'border-2 border-red-500 animate-pulse bg-red-50 dark:bg-red-900/20' : ''
+            }`}>
             <div className="text-center mb-6">
               <motion.div
                 animate={{ rotate: error ? [0, -10, 10, -10, 0] : 0 }}
@@ -152,9 +151,8 @@ const UploadPage: React.FC = () => {
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
-                      error ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : ''
-                    }`}
+                    className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${error ? 'border-red-500 bg-red-50 dark:bg-red-900/20' : ''
+                      }`}
                     required
                   />
                 </div>
@@ -162,9 +160,8 @@ const UploadPage: React.FC = () => {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
-                    error ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'
-                  } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
+                  className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${error ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'
+                    } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500`}
                 >
                   Submit
                 </motion.button>
