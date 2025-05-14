@@ -74,7 +74,7 @@ export const AdminPage: React.FC = () => {
     }
   };
 
-  const calculateProgress = (arcadeGames: number, skillBadges: number/2, triviaGames: number) => {
+  const calculateProgress = (arcadeGames: number, skillBadges: number, triviaGames: number) => {
     // Each completed item is worth 1 point
     return arcadeGames + skillBadges + triviaGames;
   };
