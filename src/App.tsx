@@ -201,7 +201,7 @@ function App() {
                     <main className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-8">
                       <div className="text-center mb-12">
                         <h1 className="text-5xl font-bold text-primary-light dark:text-primary-dark mb-4">
-                          Arcade Facilitator 2025
+                          Arcade Facilitator 2025 Cohort 2
                         </h1>
                         <p className="text-2xl text-gray-600 dark:text-gray-300 mb-6">
                           Daily user progress report is here!
@@ -238,3 +238,4 @@ function App() {
 
 
 export default App; 
+
