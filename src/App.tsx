@@ -208,7 +208,7 @@ function App() {
                         </p>
                         <div className="inline-block bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg rounded-lg p-4 shadow-lg">
                           <p className="text-lg font-semibold text-gray-700 dark:text-gray-200">
-                            Your Facilitator Code: <span className="text-primary-light dark:text-primary-dark">GCAF25C1-IN-2JG-GGE</span>
+                            Your Facilitator Code: <span className="text-primary-light dark:text-primary-dark">GCAF25C2-IN-G3H-5ER</span>
                           </p>
                         </div>
                       </div>
@@ -235,5 +235,6 @@ function App() {
     </ThemeProvider>
   );
 }
+
 
 export default App; 
