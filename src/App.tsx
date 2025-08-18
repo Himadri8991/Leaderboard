@@ -222,9 +222,15 @@ function App() {
                           <Leaderboard users={filteredUsers} searchQuery={searchQuery} />
                         </div>
 
+
+                        <div className="text-center mb-4">
                         <p className="text-2xl text-gray-600 dark:text-gray-300 mb-6">
-                          Daily user progress report is here!
+                          Loading...
+                        <p className="text-2xl text-gray-600 dark:text-gray-300 mb-6">
+                          Please Wait...
                         </p>
+                        </p>
+                          </div>
                         
                       </div>
                     </main>
@@ -243,5 +249,6 @@ function App() {
 
 
 export default App; 
+
 
 
