@@ -220,18 +220,7 @@ function App() {
 
                         <div className="card bg-white/80 dark:bg-gray-800/80 backdrop-blur-lg shadow-xl rounded-xl overflow-hidden border-2 border-primary-light/20 dark:border-primary-dark/20">
                           <Leaderboard users={filteredUsers} searchQuery={searchQuery} />
-                        </div>
-
-
-                        <div className="text-center mb-4">
-                        <p className="text-2xl text-gray-600 dark:text-gray-300 mb-6">
-                          Loading...
-                        <p className="text-2xl text-gray-600 dark:text-gray-300 mb-6">
-                          Please Wait...
-                        </p>
-                        </p>
-                          </div>
-                        
+                        </div>                        
                       </div>
                     </main>
                   }
@@ -249,6 +238,7 @@ function App() {
 
 
 export default App; 
+
 
 
 
