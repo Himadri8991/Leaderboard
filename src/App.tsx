@@ -199,7 +199,7 @@ function App() {
                   path="/"
                   element={
                     <main className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                      <div className="text-center mb-12">
+                      <div className="text-center">
                         <h1 className="text-5xl font-bold text-primary-light dark:text-primary-dark mb-4">
                           Arcade Facilitator 2025 Cohort 2
                         </h1>
@@ -222,14 +222,19 @@ function App() {
                           <Leaderboard users={filteredUsers} searchQuery={searchQuery} />
                         </div>   
                         
-                          <div className="text-center ">
-                        <p className="text-xl text-gray-600 dark:text-gray-300 ">
-                          Loading...
-                        <p className="text-2xl text-gray-600 dark:text-gray-300 ">
-                          Please Wait...
-                        </p>
-                        </p>
-                          </div>
+                        <div className="flex flex-col items-center justify-center space-y-1">
+                        {/* Animated spinner */}
+                        <div className="w-10 h-10 border-4 border-dashed rounded-full animate-spin border-green-400 dark:border-red-300"></div>
+
+                        {/* Loading text */}
+                          <p className="text-xl font-semibold bg-gradient-to-r from-green-400 to-blue-500 bg-clip-text text-transparent">
+                              Loading
+                          </p>
+
+                          <p className="text-xl font-semibold text-neonPink drop-shadow-[0_0_8px_#ff1493] animate-bounce">
+                              Please Wait...
+                         </p>
+                       </div>
                       
                       </div>
                     </main>
@@ -248,6 +253,7 @@ function App() {
 
 
 export default App; 
+
 
 
 
