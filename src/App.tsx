@@ -198,7 +198,7 @@ function App() {
                 <Route
                   path="/"
                   element={
-                    <main className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <main className="max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-4">
                       <div className="text-center">
                         <h1 className="text-5xl font-bold text-primary-light dark:text-primary-dark mb-4">
                           Arcade Facilitator 2025 Cohort 2
@@ -213,7 +213,7 @@ function App() {
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 gap-8">
+                      <div className="grid grid-cols-1 gap-8 mt-4">
                         <div>
                           <SearchBar onSearch={handleSearch} />
                         </div>
@@ -253,6 +253,7 @@ function App() {
 
 
 export default App; 
+
 
 
 
