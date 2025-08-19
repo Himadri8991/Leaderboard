@@ -43,12 +43,13 @@ const Footer: React.FC = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="text-xs text-gray-500 mt-2"
           >
-            © {new Date().getFullYear()} Arcade Facilitator. All rights reserved.
+            © {new Date().getFullYear()} Arcade Facilitator. @ All rights reserved.
           </motion.p>
         </div>
       </div>
     </footer>
   );
 };
+
 
 export default Footer; 
